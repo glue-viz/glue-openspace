@@ -8,11 +8,13 @@ from glue.viewers.common.qt.data_viewer import DataViewer
 from websocket import create_connection
 
 from .layer_artist import OpenSpaceLayerArtist
-from .state import OpenSpaceViewerState
+from .viewer_state import OpenSpaceViewerState
 from .layer_state_widget import OpenSpaceLayerStateWidget
 from .viewer_state_widget import OpenSpaceViewerStateWidget
 
 __all__ = ['OpenSpaceDataViewer']
+
+LOGO = os.path.abspath(os.path.join(os.path.dirname(__file__), 'logo.png'))
 
 
 class OpenSpaceDataViewer(DataViewer):
@@ -26,8 +28,9 @@ class OpenSpaceDataViewer(DataViewer):
 
     def __init__(self, *args, **kwargs):
         super(OpenSpaceDataViewer, self).__init__(*args, **kwargs)
+        self.viewer_size = (320, 200)
         self._label = QLabel()
-        self._image = QPixmap.fromImage(QImage(os.path.abspath('openspace-black-on-white.png')))
+        self._image = QPixmap.fromImage(QImage(LOGO))
         self._label.setPixmap(self._image)
         self.setCentralWidget(self._label)
 

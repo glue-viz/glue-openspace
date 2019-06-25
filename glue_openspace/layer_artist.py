@@ -7,11 +7,10 @@ from glue.core import Data, Subset
 
 from glue.viewers.common.layer_artist import LayerArtist
 
-from .state import OpenSpaceLayerState
+from .layer_state import OpenSpaceLayerState
 from .utils import data_to_speck, generate_cmap_table
 
 __all__ = ['OpenSpaceLayerArtist']
-
 
 TEXTURE = os.path.abspath(os.path.join(os.path.dirname(__file__), 'halo.png'))
 
