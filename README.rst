@@ -1,4 +1,4 @@
 Glue OpenSpace plugin (experimental)
 ====================================
 
-More info soon!
+Experimental plugin developed as part of the *Astrographics: Interactive Data-Driven Journeys through Space* workshop at Dagstuhl. More info soon!
