@@ -56,8 +56,10 @@ class OpenSpaceLayerArtist(LayerArtist):
         try:
             tmpfile = data_to_speck(self.state.layer,
                                     self._viewer_state.ra_att,
-                                    self._viewer_state.dec_att)
-        except Exception:
+                                    self._viewer_state.dec_att,
+                                    distance_att=self._viewer_state.distance_att)
+        except Exception as exc:
+            print(str(exc))
             return
 
         if isinstance(self.state.layer, Subset) and np.sum(self.state.layer.to_mask()) == 0:
@@ -69,9 +71,9 @@ class OpenSpaceLayerArtist(LayerArtist):
         cmap_table = generate_cmap_table(self.state.color)
 
         if isinstance(self.state.layer, Data):
-            magexp = 6.2
+            magexp = 6.7
         else:
-            magexp = 7.0
+            magexp = 7.5
 
         message = {"topic":4,
                    "type": "luascript",

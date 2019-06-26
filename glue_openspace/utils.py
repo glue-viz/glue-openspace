@@ -1,5 +1,6 @@
 import tempfile
 
+from astropy import units as u
 from astropy.coordinates import SkyCoord
 
 from matplotlib.colors import ColorConverter
@@ -33,15 +34,29 @@ def data_to_speck(data, ra_att, dec_att, distance_att=None):
     ra = data[ra_att]
     dec = data[dec_att]
 
-    # Get cartesian coordinates on unit galactic sphere
-    coord = SkyCoord(ra, dec, unit='deg', frame='fk5')
-    x, y, z = coord.galactic.cartesian.xyz
+    if distance_att is None:
 
-    # Convert to be on a sphere of radius 100pc
-    D = 100
-    x *= D
-    y *= D
-    z *= D
+        # Get cartesian coordinates on unit galactic sphere
+        coord = SkyCoord(ra, dec, unit='deg', frame='fk5')
+        x, y, z = coord.galactic.cartesian.xyz
+
+        # Convert to be on a sphere of radius 100pc
+        D = 100
+        x *= D
+        y *= D
+        z *= D
+
+    else:
+
+        distance = data[distance_att]
+
+        # Get cartesian coordinates on unit galactic sphere
+        coord = SkyCoord(ra * u.deg, dec * u.deg, distance=distance * u.pc, frame='fk5')
+        x, y, z = coord.galactic.cartesian.xyz
+
+        x = x.to_value(u.pc)
+        y = y.to_value(u.pc)
+        z = z.to_value(u.pc)
 
     # Create speck table
 
