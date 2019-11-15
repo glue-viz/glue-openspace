@@ -28,6 +28,8 @@ class OpenSpaceDataViewer(DataViewer):
     _data_artist_cls = OpenSpaceLayerArtist
     _subset_artist_cls = OpenSpaceLayerArtist
 
+    websocket = None
+
     def __init__(self, *args, **kwargs):
         super(OpenSpaceDataViewer, self).__init__(*args, **kwargs)
         self._logo = QLabel()
@@ -56,6 +58,8 @@ class OpenSpaceDataViewer(DataViewer):
         self.websocket = create_connection(self._ip.text())
         self._button.setEnabled(False)
         self._button.setText('Connected')
+        for layer in self.layers:
+            layer.update()
 
     def get_layer_artist(self, cls, layer=None, layer_state=None):
-        return cls(self.websocket, self.state, layer=layer, layer_state=layer_state)
+        return cls(self, self.state, layer=layer, layer_state=layer_state)

@@ -25,19 +25,18 @@ def generate_cmap_table(color):
     return tmpfile
 
 
-def data_to_speck(data, ra_att, dec_att, distance_att=None):
+def data_to_speck(data, lon_att, lat_att, alt_att=None, frame=None, alt_unit=None):
 
-    # TODO: add distance support
     # TODO: add support for different units, e.g. hour angle
-    # TODO: add support for different coordinate frames
 
-    ra = data[ra_att]
-    dec = data[dec_att]
+    lon = data[lon_att]
+    lat = data[lat_att]
 
-    if distance_att is None:
+    if alt_att is None:
 
         # Get cartesian coordinates on unit galactic sphere
-        coord = SkyCoord(ra, dec, unit='deg', frame='fk5')
+        coord = SkyCoord(lon, lat, unit='deg',
+                         frame=frame.lower())
         x, y, z = coord.galactic.cartesian.xyz
 
         # Convert to be on a sphere of radius 100pc
@@ -48,10 +47,12 @@ def data_to_speck(data, ra_att, dec_att, distance_att=None):
 
     else:
 
-        distance = data[distance_att]
+        distance = data[alt_att]
 
         # Get cartesian coordinates on unit galactic sphere
-        coord = SkyCoord(ra * u.deg, dec * u.deg, distance=distance * u.pc, frame='fk5')
+        coord = SkyCoord(lon * u.deg, lat * u.deg,
+                         distance=distance * u.Unit(alt_unit),
+                         frame=frame.lower())
         x, y, z = coord.galactic.cartesian.xyz
 
         x = x.to_value(u.pc)
