@@ -49,6 +49,8 @@ class OpenSpaceLayerArtist(LayerArtist):
 
     def _on_attribute_change(self, *args, **kwargs):
 
+        force = kwargs.get('force', False)
+
         if self.websocket is None:
             return
 
@@ -57,7 +59,7 @@ class OpenSpaceLayerArtist(LayerArtist):
 
         changed = self.pop_changed_properties()
 
-        if len(changed) == 0:
+        if len(changed) == 0 and not force:
             return
         
         self.clear()
@@ -127,9 +129,8 @@ class OpenSpaceLayerArtist(LayerArtist):
         # Wait for a short time to avoid sending too many messages in quick succession
         time.sleep(WAIT_TIME)
 
-
     def update(self):
         if self.websocket is None:
             return
         # self._on_fill_change()
-        self._on_attribute_change()
+        self._on_attribute_change(force=True)
