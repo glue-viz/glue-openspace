@@ -40,7 +40,7 @@ class OpenSpaceDataViewer(DataViewer):
         self._ip = QLineEdit()
         self._ip.setText('ws://localhost:4682/websocket')
         self._button = QPushButton('Connect')
-        self._button.clicked.connect(self._connect)
+        self._button.clicked.connect(self.connect_to_openspace)
 
         self._layout = QVBoxLayout()
         self._layout.addWidget(self._logo)
@@ -54,7 +54,7 @@ class OpenSpaceDataViewer(DataViewer):
         self.setCentralWidget(self._main)
 
     @messagebox_on_error('An error occurred when trying to connect to OpenSpace:', sep=' ')
-    def _connect(self, *args):
+    def connect_to_openspace(self, *args):
         self.websocket = create_connection(self._ip.text())
         self._button.setEnabled(False)
         self._button.setText('Connected')
