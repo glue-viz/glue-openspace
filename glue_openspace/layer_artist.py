@@ -81,7 +81,10 @@ class OpenSpaceLayerArtist(LayerArtist):
         if isinstance(self.state.layer, Subset) and np.sum(self.state.layer.to_mask()) == 0:
             return
 
-        self._uuid = str(uuid.uuid4())
+        if isinstance(self.state.layer, Data):
+            self._uuid = self.state.layer.label + ' [' + str(uuid.uuid4()).split('-')[0] + ']'
+        else:
+            self._uuid = self.state.layer.label + ' (' + self.state.layer.data.label + ') [' + str(uuid.uuid4()).split('-')[0] + ']'
 
         cmap_table = generate_cmap_table(self.state.color)
 
