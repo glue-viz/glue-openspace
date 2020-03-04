@@ -9,7 +9,6 @@ __all__ = ['generate_cmap_table', 'data_to_speck']
 
 to_rgb = ColorConverter().to_rgb
 
-
 def generate_cmap_table(color):
 
     tmpfile = tempfile.mktemp(suffix='.cmap')
@@ -74,3 +73,11 @@ def data_to_speck(data, lon_att, lat_att, alt_att=None, frame=None, alt_unit=Non
             f.write('  {0:10.5f} {1:10.5f} {2:10.5f} {3:10.5f} {4:10.5f} {5:10.5f} {6:10.5f}\n'.format(x[i], y[i], z[i], 0., 100., 0., 0.))
 
     return tmpfile
+
+def generate_openspace_message(script_function, script_arguments):
+    message = {"topic":4,
+                   "type": "luascript",
+                   "payload": {"function": script_function,
+                               "arguments":script_arguments,
+                               "return": False}}
+    return message
